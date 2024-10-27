@@ -1,5 +1,6 @@
 import Image from "next/image";
 import localFont from "next/font/local";
+import Link from "next/link";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -53,18 +54,18 @@ export default function LandingPage() {
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
+          <Link
             className="rounded-full bg-white text-black transition-colors flex items-center hover:bg-[#b8b8b8] dark:hover:bg-[#fff] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
             href="/sign-up"
           >
             Sign Up
-          </a>
-          <a
+          </Link>
+          <Link
             className="rounded-full border border-solid border-white transition-colors flex items-center hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
             href="/sign-in"
           >
-            Sign In
-          </a>
+            Login
+          </Link>
         </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
