@@ -46,105 +46,120 @@ export default function SignUp() {
 
   return (
     <main
-      className={`${geistSans.variable} ${geistMono.variable} flex flex-col gap-8 items-center min-h-screen justify-center font-[family-name:var(--font-geist-sans)]`}
+      className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center min-h-screen justify-center font-[family-name:var(--font-geist-sans)]`}
     >
-      <svg
-        data-slot="icon"
-        fill="none"
-        strokeWidth="1.5"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        className="h-20 w-40"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
-        ></path>
-      </svg>
-      <div className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Create an account
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Enter your email below to create your account
-        </p>
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 w-1/5"
+      <div className="flex flex-col w-1/5 space-y-6">
+        <svg
+          data-slot="icon"
+          fill="none"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          className="h-20"
         >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder="Email"
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Password"
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Confirm Password"
-                    disabled={isLoading}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button variant="secondary" type="submit" disabled={isLoading}>
-            {isLoading && (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
+          ></path>
+        </svg>
+        <div className="flex flex-col text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Create an account
+          </h1>
+        </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col space-y-2"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="Email"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Confirm Password"
+                      disabled={isLoading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button variant="secondary" type="submit" disabled={isLoading}>
+              {isLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Sign Up
+            </Button>
+          </form>
+        </Form>
+        <div className="flex items-center gap-2">
+          <Separator className="flex-1 bg-muted-foreground" />
+          <span className="text-sm text-muted-foreground">
+            or continue with
+          </span>
+          <Separator className="flex-1 bg-muted-foreground" />
+        </div>
+        <div className="flex flex-col space-y-2">
+          <Button variant="outline" type="button" disabled={isLoading}>
+            {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Sign Up
+            ) : (
+              <Icons.google className="mr-2 h-4 w-4" />
+            )}{" "}
+            Google
           </Button>
-        </form>
-      </Form>
-      <Separator className="w-1/5 bg-muted-foreground" />
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.google className="mr-2 h-4 w-4" />
-        )}{" "}
-        Google
-      </Button>
+          <Button variant="outline" type="button" disabled={isLoading}>
+            {isLoading ? (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.gitHub className="mr-2 h-4 w-4" />
+            )}{" "}
+            GitHub
+          </Button>
+        </div>
+      </div>
     </main>
   );
 }
