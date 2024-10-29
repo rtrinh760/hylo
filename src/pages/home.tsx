@@ -29,7 +29,7 @@ export default function Home() {
     const { status } = useSession()
 
   if (status == "unauthenticated") {
-    router.push("/sign-in")
+    router.push("/")
   }
 
 
@@ -75,7 +75,7 @@ export default function Home() {
     <div className="overflow-auto overscroll-y-none">
       <div className="flex min-h-screen w-screen flex-col border">
         <div className="flex items-center border h-20">
-          <h1 className="ml-10 text-3xl">りかい</h1>
+          <h1 className="ml-10 text-3xl">Hylo</h1>
         </div>
 
         <main className="mt-4 mb-20 flex flex-col justify-center items-center">

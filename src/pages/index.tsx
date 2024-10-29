@@ -37,10 +37,10 @@ export default function LandingPage() {
           ></path>
         </svg>
         <h1 className="text-2xl sm:text-4xl font-bold text-center sm:text-left">
-          Welcome to Rikai
+          Welcome to Hylo
         </h1>
         <p className="text-sm sm:text-base text-center sm:text-left">
-          Rikai is your ultimate language learning app for immersion. Dive deep
+          Hylo is your ultimate language learning app for immersion. Dive deep
           into the language and culture with our interactive tools and
           resources.
         </p>
@@ -51,7 +51,6 @@ export default function LandingPage() {
               video player.{" "}
             </code>
           </li>
-          <li>Track your progress and improve daily.</li>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
