@@ -1,16 +1,8 @@
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormMessage } from "@/components/ui/form";
-import { FormField } from "@/components/ui/form";
-import { FormItem } from "@/components/ui/form";
 import localFont from "next/font/local";
-import { signInSchema } from "@/lib/schemas";
-import { useState } from "react";
-import { Icons } from "@/components/ui/icons";
-import { Separator } from "@/components/ui/separator";
+import { ClientSafeProvider, getProviders, LiteralUnion, signIn } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { BuiltInProviderType } from "next-auth/providers/index";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,24 +16,23 @@ const geistMono = localFont({
 });
 
 export default function SignIn() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const form = useForm<z.infer<typeof signInSchema>>({
-    resolver: zodResolver(signInSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>(null);
 
-  const onSubmit = (values: z.infer<typeof signInSchema>) => {
-    setIsLoading(true);
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const res = await getProviders();
+      setProviders(res);
+    };
+    fetchProviders();
+  }, []);
+  
+  // const onSubmit = (values: z.infer<typeof signInSchema>) => {
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+  //   setTimeout(() => {
+  //   }, 1000);
 
-    console.log(values);
-  };
+  //   console.log(values);
+  // };
 
   return (
     <main
@@ -65,81 +56,20 @@ export default function SignIn() {
           ></path>
         </svg>
         <div className="flex flex-col text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Sign into an account
-          </h1>
-        </div>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col space-y-2"
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      disabled={isLoading}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button variant="secondary" type="submit" disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Login
-            </Button>
-          </form>
-        </Form>
-        <div className="flex items-center gap-2">
-          <Separator className="flex-1 bg-muted-foreground" />
-          <span className="text-sm text-muted-foreground">
-            or continue with
-          </span>
-          <Separator className="flex-1 bg-muted-foreground" />
+          <h1 className="text-2xl font-semibold tracking-tight">Sign In</h1>
         </div>
         <div className="flex flex-col space-y-2">
-          <Button variant="outline" type="button" disabled={isLoading}>
-            {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.google className="mr-2 h-4 w-4" />
-            )}{" "}
-            Google
-          </Button>
-          <Button variant="outline" type="button" disabled={isLoading}>
-            {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.gitHub className="mr-2 h-4 w-4" />
-            )}{" "}
-            GitHub
-          </Button>
+          {providers &&
+            Object.values(providers).map((provider) => (
+              <Button
+                key={provider.name}
+                variant="outline"
+                type="button"
+                onClick={() => signIn(provider.id, { callbackUrl: '/home' })}
+              >
+                {provider.name}
+              </Button>
+            ))}
         </div>
       </div>
     </main>

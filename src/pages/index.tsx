@@ -2,6 +2,7 @@ import Image from "next/image";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useSession, signOut } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,6 +16,8 @@ const geistMono = localFont({
 });
 
 export default function LandingPage() {
+  const { data: session } = useSession();
+
   return (
     <div
       className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
@@ -52,15 +55,20 @@ export default function LandingPage() {
             </code>
           </li>
         </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+        {session?.user?.name ? (
+          <div className="space-x-2">
+            <Button variant="secondary" asChild>
+              <Link href="/home">Home</Link>
+            </Button>
+            <Button variant="outline" onClick={() => signOut()}>
+              Sign Out
+            </Button>
+          </div>
+        ) : (
           <Button variant="secondary" asChild>
-            <Link href="/sign-up">Sign Up</Link>
+            <Link href="/sign-in">Sign In</Link>
           </Button>
-          <Button variant="outline" asChild>
-            <Link href="/sign-in">Login</Link>
-          </Button>
-        </div>
+        )}
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <a
