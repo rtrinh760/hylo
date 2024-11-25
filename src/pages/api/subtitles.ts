@@ -17,8 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             return res.status(200).json(subtitlesResponse);
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: 'Failed to fetch subtitles' });
+            return res.status(500).json({ message: error });
         }
     } else {
         res.setHeader('Allow', ['GET']);
