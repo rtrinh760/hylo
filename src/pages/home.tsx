@@ -25,6 +25,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
 import { Subtitle, SubtitleOutput } from "youtube-captions-scraper";
 import { NavigationMenu } from "@/components/ui/navigation-menu";
+import { Footer } from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -113,10 +114,8 @@ export default function Home() {
   };
 
   return (
-    <div className="overflow-auto overscroll-y-none">
-      <main
-        className={`${geistSans.variable} ${geistMono.variable} font-[family-name:var(--font-geist-sans)] space-y-4 flex flex-col justify-center items-center`}
-      >
+    <div className={`${geistSans.variable} ${geistMono.variable} flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]`}>
+      <main className="flex-1 flex flex-col items-center p-8">
         <NavigationMenu className="flex max-w-full w-full mt-6 mb-10 px-10 justify-between">
           <div className="flex flex-row items-center space-x-1">
             <h1 className="text-3xl">Hylo</h1>
@@ -205,6 +204,7 @@ export default function Home() {
           </form>
         </Form>
       </main>
+      <Footer />
       <Toaster />
     </div>
   );

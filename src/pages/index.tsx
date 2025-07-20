@@ -1,8 +1,8 @@
-import Image from "next/image";
 import localFont from "next/font/local";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useSession, signOut } from "next-auth/react";
+import { Footer } from "@/components/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -20,9 +20,9 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`}
+      className={`${geistSans.variable} ${geistMono.variable} flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]`}
     >
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+      <main className="flex-1 flex flex-col gap-8 items-center justify-center p-8 sm:p-20">
         <svg
           data-slot="icon"
           fill="none"
@@ -70,47 +70,7 @@ export default function LandingPage() {
           </Button>
         )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/features"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="Features icon"
-            width={16}
-            height={16}
-          />
-          Features
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/community"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Community icon"
-            width={16}
-            height={16}
-          />
-          Community
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/contact"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Contact icon"
-            width={16}
-            height={16}
-          />
-          Contact Us
-        </a>
-      </footer>
+      <Footer />
     </div>
   );
 }
