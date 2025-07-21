@@ -47,14 +47,6 @@ export default function LandingPage() {
           into the language and culture with our interactive tools and
           resources.
         </p>
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by exploring our{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] rounded font-semibold">
-              video player.{" "}
-            </code>
-          </li>
-        </ol>
         {session?.user?.name ? (
           <div className="space-x-2">
             <Button variant="secondary" asChild>
@@ -66,8 +58,8 @@ export default function LandingPage() {
           </div>
         ) : (
           <Button variant="secondary" asChild>
-            <Link href="/sign-in">Sign In</Link>
-          </Button>
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
         )}
       </main>
       <Footer />

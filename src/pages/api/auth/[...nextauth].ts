@@ -20,7 +20,8 @@ export const authOptions = {
   }),
   pages: {
     signIn: '/sign-in',
-  }
+    newUser: '/home'
+  },
 }
 
 export default NextAuth(authOptions) 

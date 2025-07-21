@@ -39,18 +39,14 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  const router = useRouter();
   const { status } = useSession();
+  const router = useRouter();
   const { toast } = useToast();
 
   const [currentVideoId, setCurrentVideoId] = useState("");
   const videoRef = useRef<ReactPlayer>(null);
   const [subtitles, setSubtitles] = useState<SubtitleOutput>();
   const [currentSubtitle, setCurrentSubtitle] = useState<Subtitle>();
-
-  if (status == "unauthenticated") {
-    router.push("/");
-  }
 
   const form = useForm<z.infer<typeof videoSchema>>({
     resolver: zodResolver(videoSchema),
@@ -81,6 +77,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [subtitles, currentSubtitle]);
 
+  if (status === "loading") {
+    return null;
+  }
+  if (status === "unauthenticated") {
+    router.push("/");
+    return null;
+  }
+
   const onSubmit = async (values: z.infer<typeof videoSchema>) => {
     const parsedVideoId = linkParser(values.link);
 
@@ -110,37 +114,38 @@ export default function Home() {
 
     const subtitlesResponse = await response.json();
     setSubtitles(subtitlesResponse);
-    setCurrentSubtitle(subtitlesResponse[0])
+    setCurrentSubtitle(subtitlesResponse[0]);
   };
 
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]`}>
-      <main className="flex-1 flex flex-col items-center p-8">
-        <NavigationMenu className="flex max-w-full w-full mt-6 mb-10 px-10 justify-between">
-          <div className="flex flex-row items-center space-x-1">
-            <h1 className="text-3xl">Hylo</h1>
-            <svg
-              data-slot="icon"
-              fill="none"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              className="h-8"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
-              ></path>
-            </svg>
-          </div>
-          <Button variant="secondary" onClick={() => signOut()}>
-            Sign Out
-          </Button>
-        </NavigationMenu>
-
+    <div
+      className={`${geistSans.variable} ${geistMono.variable} flex flex-col min-h-screen font-[family-name:var(--font-geist-sans)]`}
+    >
+      <NavigationMenu className="h-[10vh] flex max-w-full w-full mt-6 mb-10 px-10 justify-between">
+        <div className="flex flex-row items-center space-x-1">
+          <h1 className="text-3xl">Hylo</h1>
+          <svg
+            data-slot="icon"
+            fill="none"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            className="h-8"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
+            ></path>
+          </svg>
+        </div>
+        <Button variant="secondary" onClick={() => signOut()}>
+          Sign Out
+        </Button>
+      </NavigationMenu>
+      <main className="h-[80vh] flex flex-col items-center justify-center">
         {currentVideoId && (
           <ReactPlayer
             ref={videoRef}
@@ -204,7 +209,7 @@ export default function Home() {
           </form>
         </Form>
       </main>
-      <Footer />
+      <Footer className="h-[10vh]" />
       <Toaster />
     </div>
   );
