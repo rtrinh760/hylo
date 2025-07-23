@@ -47,13 +47,9 @@ export default function Home() {
   const videoRef = useRef<ReactPlayer>(null);
   const [subtitles, setSubtitles] = useState<SubtitleOutput>();
   const [currentSubtitle, setCurrentSubtitle] = useState<Subtitle>();
-
   const form = useForm<z.infer<typeof videoSchema>>({
     resolver: zodResolver(videoSchema),
-    defaultValues: {
-      link: "",
-      lang: "",
-    },
+    defaultValues: { link: "", lang: "" },
   });
 
   useEffect(() => {
