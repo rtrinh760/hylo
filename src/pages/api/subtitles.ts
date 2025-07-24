@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { YoutubeTranscript } from "youtube-transcript";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
 
@@ -28,15 +27,61 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const validated = await validateRequest(req, res);
   if (!validated) return;
   const { videoID, lang } = validated;
-
+  console.log("lang", lang);
+  console.log("videoID", videoID);
   try {
-    const subtitles = await YoutubeTranscript.fetchTranscript(videoID, {
-      lang: lang,
+    // TODO: may need to change api key due to free tier
+    const response = await fetch("https://www.youtube-transcript.io/api/transcripts", {
+      method: "POST",
+      headers: {
+        "Authorization": `Basic ${process.env.YOUTUBE_TRANSCRIPT_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ids: [videoID],
+      }),
     });
-    console.log("Raw subtitles response:", subtitles);
-    res.status(200).json(subtitles);
+    const data: YouTubeTranscriptApiResponseArray = await response.json();
+    res.status(200).json(data[0].tracks[0].transcript);
   } catch (error) {
     console.error("Failed to fetch subtitles:", error);
     res.status(500).json({ error: "Failed to fetch subtitles", details: error });
   }
 }
+
+export interface TranscriptEntry {
+  start: string;
+  dur: string;
+  text: string;
+  [key: string]: unknown;
+}
+
+export interface SubtitleTrack {
+  language: string;
+  transcript: TranscriptEntry[];
+  [key: string]: unknown;
+}
+
+export interface LanguageInfo {
+  label: string;
+  languageCode: string;
+}
+
+export interface YouTubeTranscriptApiResponse {
+  id: string;
+  microformat: {
+    playerMicroformatRenderer: Record<string, unknown>;
+  };
+  isLive: boolean;
+  isLoginRequired: boolean;
+  languages: LanguageInfo[];
+  playabilityStatus: {
+    status: string;
+    reason: string;
+  };
+  title: string;
+  tracks: SubtitleTrack[];
+  [key: string]: unknown;
+}
+
+export type YouTubeTranscriptApiResponseArray = YouTubeTranscriptApiResponse[];

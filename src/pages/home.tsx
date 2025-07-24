@@ -109,6 +109,7 @@ export default function Home() {
     }
 
     const subtitlesResponse = await response.json();
+    console.log("Subtitles response:", subtitlesResponse);
     setSubtitles(subtitlesResponse);
     setCurrentSubtitle(subtitlesResponse[0]);
   };
@@ -141,7 +142,15 @@ export default function Home() {
           Sign Out
         </Button>
       </NavigationMenu>
-      <main className="h-[80vh] flex flex-col items-center justify-center">
+      <main className="h-[80vh] flex flex-col items-center justify-center space-y-2">
+        {!currentVideoId && (
+          <div className="font-semibold text-3xl text-center align-middle">
+            Find a video to transcribe
+            <div className="text-sm text-gray-500">
+              Enter a YouTube link to get started
+            </div>
+          </div>
+        )}
         {currentVideoId && (
           <ReactPlayer
             ref={videoRef}
@@ -149,7 +158,7 @@ export default function Home() {
             controls={true}
           />
         )}
-        <div className="font-semibold text-6xl text-center align-middle">
+        <div className="font-semibold text-6xl text-center align-middle py-4">
           {currentSubtitle?.text}
         </div>
         <Form {...form}>
